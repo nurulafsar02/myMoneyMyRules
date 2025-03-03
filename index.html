@@ -138,10 +138,10 @@ function updateChart() {
     chart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Income', 'Expense'],
+            labels: ['Income', 'Fundamental Spending', 'Fun Stuff', 'Savings'],
             datasets: [{
-                data: [totalIncome, totalExpense],
-                backgroundColor: ['#4CAF50', '#f44336']
+                data: [totalIncome, getTotalCategoryExpense('Fundamental Spending'), getTotalCategoryExpense('Fun Stuff'), getTotalCategoryExpense('Savings')],
+                backgroundColor: ['#4CAF50', '#FFB74D', '#64B5F6', '#81C784']
             }]
         }
     });
@@ -171,10 +171,13 @@ function addTransaction(isIncome) {
     updateLocalStorage();
     loadTransactions();
 
-    // Clear input fields after adding
     document.getElementById("desc").value = "";
     document.getElementById("amount").value = "";
     document.getElementById("date").value = "";
+}
+
+function getTotalCategoryExpense(category) {
+    return transactions.filter(t => !t.isIncome && t.category === category).reduce((sum, t) => sum + t.amount, 0);
 }
 
 function loadTransactions() {
