@@ -108,10 +108,11 @@
             <option value="Transport">Transport</option>
             <option value="Entertainment">Entertainment</option>
             <option value="Savings">Savings</option>
-            <option value="Fundamental">Fundamental</option>
+            <option value="Fundamental Spending">Fundamental Spending</option>
             <option value="Fun Stuff">Fun Stuff</option>
             <option value="Other">Other</option>
         </select>
+        
         <button class="income-btn" onclick="addTransaction(true)">Add Income</button>
         <button class="expense-btn" onclick="addTransaction(false)">Add Expense</button>
         <ul id="transactions"></ul>
@@ -136,25 +137,27 @@
        }
 
        function updateChart() {
-           if (chart) chart.destroy();
-           const ctx = document.getElementById('expenseChart').getContext('2d');
+    if (chart) chart.destroy();
+    const ctx = document.getElementById('expenseChart').getContext('2d');
 
-           chart = new Chart(ctx, {
-               type: 'doughnut',
-               data: {
-                   labels: ['Income', 'Fundamental', 'Fun Stuff', 'Savings'],
-                   datasets: [{
-                       data: [
-                           totalIncome,
-                           getTotalCategoryExpense('Fundamental'),
-                           getTotalCategoryExpense('Fun Stuff'),
-                           getTotalCategoryExpense('Savings')
-                       ],
-                       backgroundColor: ['#4CAF50', '#FFB74D', '#64B5F6', '#81C784']
-                   }]
-               }
-           });
-       }
+    chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Income', 'Fundamental Spending', 'Fun Stuff', 'Savings', 'Other'],
+            datasets: [{
+                data: [
+                    totalIncome,
+                    getTotalCategoryExpense('Fundamental Spending'),
+                    getTotalCategoryExpense('Fun Stuff'),
+                    getTotalCategoryExpense('Savings'),
+                    getTotalCategoryExpense('Other')
+                ],
+                backgroundColor: ['#4CAF50', '#FFB74D', '#64B5F6', '#81C784', '#E57373']
+            }]
+        }
+    });
+}
+
 
        function addTransaction(isIncome) {
            const desc = document.getElementById("desc").value;
@@ -186,9 +189,11 @@
        }
 
        function getTotalCategoryExpense(category) {
-           return transactions.filter(t => !t.isIncome && t.category === category)
-               .reduce((sum, t) => sum + t.amount, 0);
-       }
+    return transactions
+        .filter(t => !t.isIncome && t.category === category)
+        .reduce((sum, t) => sum + t.amount, 0);
+}
+
 
        function loadTransactions() {
            const transactionList = document.getElementById("transactions");
