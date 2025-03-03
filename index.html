@@ -170,6 +170,11 @@ function addTransaction(isIncome) {
     transactions.push(transaction);
     updateLocalStorage();
     loadTransactions();
+
+    // Clear input fields after adding
+    document.getElementById("desc").value = "";
+    document.getElementById("amount").value = "";
+    document.getElementById("date").value = "";
 }
 
 function loadTransactions() {
